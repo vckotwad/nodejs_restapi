@@ -8,6 +8,7 @@ const mongoose=require("mongoose")
 
 
 
+
 app.use("/uploads",express.static("uploads"))
 app.use(morgan("dev"))
 app.use(bodyparser.urlencoded({extended:false}))
