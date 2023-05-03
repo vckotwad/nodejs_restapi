@@ -4,6 +4,7 @@ const mongoose=require("mongoose")
 const bcrypt=require("bcrypt")
 
 const User=require("../models/user")
+const user = require("../models/user")
 
 
 //sign up
@@ -46,7 +47,28 @@ router.post("/signup",(req,res,next)=>{
 
 
 //sign in
-router.post("/signin",(req,res,next)=>{
+router.post("/login",(req,res,next)=>{
+    User.find({email:req.body.email}).exec()
+    .then(user=>{
+            if (user.length < 1){
+                return res.status(401).json({message:"auth failed"})
+            }
+            bcrypt.compare(req.body.password,user[0].password,(err,result)=>{
+                if(err){
+                    return res.status(401).json({message:"auth failed"})
+                }
+                if(result){
+                    return res.status(200).json({message:"auth successfull"})
+
+                }
+                res.status(401).json({message:"auth failed"})
+
+            })
+    })
+    .catch(err=>{
+        res.status(200).json({error:err})
+    })
+
 
 })
 
