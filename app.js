@@ -1,7 +1,11 @@
 const express =require("express")
 const app =express()
+
 const productrouter=require("./api/routes/product")
 const orderrouter=require("./api/routes/orders")
+const userrouter=require("./api/routes/users")
+
+
 const morgan = require("morgan")
 const bodyparser=require("body-parser")
 const mongoose=require("mongoose")
@@ -26,6 +30,8 @@ app.use((req,res,next)=>{
 
 app.use("/products",productrouter.router)
 app.use("/orders",orderrouter.router)
+app.use("/users",userrouter.router)
+
 
 mongoose.connect("mongodb+srv://vckotwad:Vaibhav%40123@node-rest-shop.ldm81gy.mongodb.net/?retryWrites=true&w=majority",{ useNewUrlParser: true })
 
