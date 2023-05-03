@@ -4,6 +4,8 @@ const express =require("express")
 const app =express()
 
 
+
+
 //importing routes
 const productrouter=require("./api/routes/product")
 const orderrouter=require("./api/routes/orders")
@@ -52,8 +54,8 @@ app.use("/orders",orderrouter.router)
 app.use("/users",userrouter.router)
 
 
-//connecting to the mongodb database
-mongoose.connect("mongodb+srv://vckotwad:Vaibhav%40123@node-rest-shop.ldm81gy.mongodb.net/?retryWrites=true&w=majority",{ useNewUrlParser: true })
+//connecting to the mongodb database using environment variable
+mongoose.connect(process.env.mongodb_string,{ useNewUrlParser: true })
 
 
 //creating a page not found route

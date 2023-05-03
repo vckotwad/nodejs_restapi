@@ -1,6 +1,7 @@
 //importing express and router
 const express=require("express")
 const router=express.Router()
+const checkAuth=require("../middleware/check-auth")
 
 
 //importing user controller where all the login is written
@@ -14,7 +15,7 @@ router.post("/signup",usercontroller.users_signup)
 router.post("/login",usercontroller.user_login)
 
 //deleting user
-router.delete("/:userId",usercontroller.user_delete)
+router.delete("/:userId",checkAuth,usercontroller.user_delete)
 
 
 //exporting router to app.js file
