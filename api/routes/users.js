@@ -3,8 +3,11 @@ const router=express.Router()
 const mongoose=require("mongoose")
 const bcrypt=require("bcrypt")
 
+
 const User=require("../models/user")
 const user = require("../models/user")
+const jwt=require("jsonwebtoken")
+
 
 
 //sign up
@@ -58,13 +61,26 @@ router.post("/login",(req,res,next)=>{
                     return res.status(401).json({message:"auth failed"})
                 }
                 if(result){
-                    return res.status(200).json({message:"auth successfull"})
+                    //creating jwt token
+                    console.log(result)
+                    const token=jwt.sign({
+                        email:user[0].email,
+                        id:user[0]._id
+                    },"jwtpassword",
+                    {
+                        expiresIn:"1h"
+                    })
+                    //returning token 
+                    return res.status(200).json({message:"auth successfull",
+                            token:token})
 
                 }
+                //returning failure
                 res.status(401).json({message:"auth failed"})
 
             })
     })
+    //returning failure
     .catch(err=>{
         res.status(200).json({error:err})
     })

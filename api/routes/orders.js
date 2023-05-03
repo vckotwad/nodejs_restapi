@@ -3,6 +3,7 @@ const router=express.Router()
 const mongoose=require("mongoose")
 const Order=require("../models/order")
 const Product=require("../models/product")
+const checkAuth=require("../middleware/check-auth")
 
 
 router.get("/",(req,res,next)=>{
@@ -31,7 +32,7 @@ router.get("/",(req,res,next)=>{
 
 })
 
-router.post("/",(req,res,next)=>{
+router.post("/",checkAuth,(req,res,next)=>{
 
 
     Product.findById(req.body.productid)
@@ -91,7 +92,7 @@ router.get("/:orderid",(req,res,next)=>{
 
 })
 
-router.delete("/:orderid",(req,res,next)=>{
+router.delete("/:orderid",checkAuth,(req,res,next)=>{
 
     const id = req.params.orderid
 
