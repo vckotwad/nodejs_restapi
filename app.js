@@ -55,7 +55,9 @@ app.use("/users",userrouter.router)
 
 
 //connecting to the mongodb database using environment variable
-mongoose.connect(process.env.mongodb_string,{ useNewUrlParser: true })
+// setup your environment variable accordingly
+mongodb_string=process.env.mongodb_string
+mongoose.connect(mongodb_string,{ useNewUrlParser: true })
 
 
 //creating a page not found route
