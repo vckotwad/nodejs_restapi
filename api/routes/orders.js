@@ -1,111 +1,28 @@
+//importing express and router
 const express=require("express")
 const router=express.Router()
-const mongoose=require("mongoose")
-const Order=require("../models/order")
-const Product=require("../models/product")
+
+
+//importing middleware for checking authentication
 const checkAuth=require("../middleware/check-auth")
 
 
-router.get("/",(req,res,next)=>{
-
-    Order
-    .find()
-    .select("id productid quantity")
-    .populate("product")
-    .exec()
-    .then(doc=>{
-        res.status(200).json({
-            length:doc.length,
-            orders:doc.map(doc=>{
-                return {
-                    id:doc._id,
-                    product:doc.product,
-                    quantity:doc.quantity
-
-                }
-            })
-        })
-    })
-    .catch(err=>{
-        res.status(500).json({error:err})
-    })
-
-})
-
-router.post("/",checkAuth,(req,res,next)=>{
+//importing order controller where all the logic is written
+const ordercontroller=require("../controller/orders")
 
 
-    Product.findById(req.body.productid)
-    .then(product=>{
-            if(!product){
-                return res.status(404).json({message:"product not found"})
-            }
-        const order= new Order({
-            _id:new mongoose.Types.ObjectId(),
-            product:req.body.productid,
-            quantity:req.body.quantity
-        })
+//to get all the orders
+router.get("/",checkAuth,ordercontroller.order_get_all)
 
-        return order.save()
-    })
-    .then(result=>{
-        res.status(201).json({message:"order stored"})
-    })
-    .catch(err=>{
-        res.status(500).json({error:err})
-    })
-
-
-})
+//to create a order
+router.post("/",checkAuth,ordercontroller.orders_post)
  
-    
+//to get specific order
+router.get("/:orderid",ordercontroller.order_get_single)
+
+//to delte a order
+router.delete("/:orderid",checkAuth,ordercontroller.order_delete)
 
 
-
-
-
-
-
-
-router.get("/:orderid",(req,res,next)=>{
-    const id = req.params.orderid
-
-    Order
-    .findById(id)
-    .select("_id productid quantity")
-    .populate("product")
-    .exec()
-    .then(doc=>{
-        res.status(200).json({
-        
-                    id:doc._id,
-                    product:doc.product,
-                    quantity:doc.quantity
-
-                })
-            })
-        
-    .catch(err=>{
-        res.status(500).json({message:err})
-    })
-    
-
-})
-
-router.delete("/:orderid",checkAuth,(req,res,next)=>{
-
-    const id = req.params.orderid
-
-    Order
-    .deleteMany({_id:id})
-    .exec()
-    .then(doc=>{
-        res.status(200).json(doc)
-    })
-    .catch(err=>{
-        res.status(500).json({message:err})
-    })
-  
-})
-
+//export router to app.js file
 exports.router=router

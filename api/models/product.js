@@ -1,5 +1,8 @@
+//importing mongoose
 const mongoose=require("mongoose")
 
+
+//creating product schema
 const productSchema=mongoose.Schema({
     _id:mongoose.Schema.Types.ObjectId,
     name:{type:String,
@@ -14,4 +17,6 @@ const productSchema=mongoose.Schema({
 
 )
 
+
+//exporting product schema
 module.exports=mongoose.model("Product",productSchema)

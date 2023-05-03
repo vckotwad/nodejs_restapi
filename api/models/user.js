@@ -1,5 +1,8 @@
+//importing mongoose
 const mongoose=require("mongoose")
 
+
+//creating user schema
 const userSchema=mongoose.Schema({
     _id:    mongoose.Schema.Types.ObjectId,
     email:  {type:String,
@@ -13,4 +16,6 @@ const userSchema=mongoose.Schema({
 
 )
 
+
+//exporting user schema
 module.exports=mongoose.model("user",userSchema)
